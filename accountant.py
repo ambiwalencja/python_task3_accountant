@@ -26,14 +26,13 @@ while input_string != 'stop':
             number = int(input_list[3])  # int
             if price > 0 and number > 0:  # price and number must be positive
                 if command == 'sale':
-                    if 'product_id' in magazine:
+                    if product_id in magazine:
                         if magazine[product_id] > number:
                             magazine[product_id] -= number  # subtracting number of sold products from the magazine
                             account_balance += price * number  # adding income
                         else:
                             print(f'Error - out of stock')
                             continue  # try again
-                        # print(f'Sale mode: product ID - {product_id}, price - {price}, numbers of sold items - {number}.')
                     else:
                         print(f'Not in offer! Pick another product')
                         continue  # try again...
