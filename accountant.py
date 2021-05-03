@@ -38,12 +38,13 @@ while input_string != 'stop':
                         continue  # try again...
                 elif command == 'purchase':
                     account_balance -= price * number  # subtracting the expense
-                    if 'product_id' in magazine:
+                    if product_id in magazine:
                         magazine[product_id] += number  # adding number of purchased products to the magazine
+                        print(f'HELP: Magazine: {product_id}: number - {magazine[product_id]}, last added - {number}')
                     else:
-                        magazine[product_id] = number  # adding number of purchased products to the magazine
+                        magazine[product_id] = number  # adding purchased products to the magazine
                     # print(f'Purchase mode: product ID - {product_id}, '
-                    #      f'price - {price}, numbers of sold items - {number}.')
+                    #      f' price - {price}, numbers of sold items - {number}.')
             else:
                 print('Error - price and number must be positive.')
                 continue  # try again
@@ -58,4 +59,3 @@ if input_string == 'account':
     print(f'Current account balance is {account_balance}.')
 elif input_string == 'magazine':
     print(f'Stock status: {magazine}.')
-
