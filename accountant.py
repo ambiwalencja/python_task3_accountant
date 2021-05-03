@@ -20,6 +20,8 @@ while input_string != 'stop':
             comment = input_list[2]  # str
             account_balance += account_change  # update account balance
             # print(f'Balance mode: change on the account {account_change}, comment {comment}.')
+        elif command == 'stop':
+            break
         else:
             product_id = input_list[1]  # str
             price = int(input_list[2])  # int
@@ -50,7 +52,7 @@ while input_string != 'stop':
                 continue  # try again
     else:
         print(f'Please write one of allowed commands: {ALLOWED_COMMANDS}')
-    # input_string = input("Next command line: ")  # get next input
+    # input_string = input("Next action: ")  # get next input
 
 print(f'Changes complete.')
 
