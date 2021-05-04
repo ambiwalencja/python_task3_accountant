@@ -1,6 +1,6 @@
 
 ALLOWED_COMMANDS = ('balance', 'sale', 'purchase', 'stop')
-input_dict = {}  # an empty dictionary for saving all command lines
+actions = {}  # an empty dictionary for saving all command lines: key - action_counter, value - input_list
 action_counter = 0  # number of actions given by the user
 account_balance = 0
 account_history = {}  # key - account change, value - comment
@@ -13,13 +13,13 @@ while input_string != 'stop':
     input_list = input_string.split()
     command = input_list[0]
     action_counter += 1  # number of line will be the key of a dict
-    input_dict[action_counter] = input_list  # current command line is saved
+    actions[action_counter] = input_list  # current command line is saved
     if command in ALLOWED_COMMANDS:
         if command == 'balance':  # balance mode
             account_change = int(input_list[1])  # int
             comment = input_list[2]  # str
             account_balance += account_change  # update account balance
-            # print(f'Balance mode: change on the account {account_change}, comment {comment}.')
+            # print(f'Balance mode: change on the account: {account_change}, comment: {comment}.')
         elif command == 'stop':
             break
         else:
@@ -32,6 +32,7 @@ while input_string != 'stop':
                         if magazine[product_id] > number:
                             magazine[product_id] -= number  # subtracting number of sold products from the magazine
                             account_balance += price * number  # adding income
+                            account_history[price] = 'sale'  # adding comment to the account change
                         else:
                             print(f'Error - out of stock')
                             continue  # try again
@@ -40,6 +41,7 @@ while input_string != 'stop':
                         continue  # try again...
                 elif command == 'purchase':
                     account_balance -= price * number  # subtracting the expense
+                    account_history[price] = 'purchase'  # adding the expense to account history
                     if product_id in magazine:
                         magazine[product_id] += number  # adding number of purchased products to the magazine
                         print(f'HELP: Magazine: {product_id}: number - {magazine[product_id]}, last added - {number}')
@@ -56,8 +58,20 @@ while input_string != 'stop':
 
 print(f'Changes complete.')
 
+# prints with stock/account status
 input_string = input("Write next action:")
 if input_string == 'account':
     print(f'Current account balance is {account_balance}.')
-elif input_string == 'magazine':
+elif input_string == 'account history':
+    print(f'Account history:')
+    for change, comment in account_history.items():
+        print(change, comment)
+    print('Good bye!')
+elif input_string.split()[0] == 'magazine':
     print(f'Stock status: {magazine}.')
+
+# final print
+print('All actions performed:')
+for number, action in actions.items():
+    print(number, action)
+print('Good bye!')
