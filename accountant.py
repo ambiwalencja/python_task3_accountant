@@ -44,7 +44,7 @@ while input_string != 'stop':
                     account_history[price] = 'purchase'  # adding the expense to account history
                     if product_id in magazine:
                         magazine[product_id] += number  # adding number of purchased products to the magazine
-                        print(f'HELP: Magazine: {product_id}: number - {magazine[product_id]}, last added - {number}')
+                        # print(f'Magazine: {product_id}: number - {magazine[product_id]}, last added - {number}')
                     else:
                         magazine[product_id] = number  # adding purchased products to the magazine
                     # print(f'Purchase mode: product ID - {product_id}, '
@@ -59,16 +59,23 @@ while input_string != 'stop':
 print(f'Changes complete.')
 
 # prints with stock/account status
-input_string = input("Write next action:")
+input_string = input("Write next action: ")
+input_list = input_string.split()
 if input_string == 'account':
     print(f'Current account balance is {account_balance}.')
 elif input_string == 'account history':
     print(f'Account history:')
     for change, comment in account_history.items():
         print(change, comment)
-    print('Good bye!')
-elif input_string.split()[0] == 'magazine':
-    print(f'Stock status: {magazine}.')
+elif input_list[0] == 'magazine':
+    print(f'Stock status:')
+    for product in input_list:
+        if product in magazine:
+            print(f'{product}: {magazine[product]}')
+        else:
+            print(f'Given product not in magazine')
+    # for product, number in magazine.items():
+    #    print(product, number)
 
 # final print
 print('All actions performed:')
