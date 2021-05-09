@@ -1,5 +1,5 @@
 
-ALLOWED_COMMANDS = ('balance', 'sale', 'purchase', 'stop')
+ALLOWED_COMMANDS = ('payment', 'sale', 'purchase', 'stop', 'account', 'magazine')
 actions = {}  # an empty dictionary for saving all command lines: key - action_counter, value - input_list
 action_counter = 0  # number of actions given by the user
 account_balance = 0
@@ -7,21 +7,35 @@ account_history = {}  # key - account change, value - comment
 magazine = {}  # dictionary for magazine balance: key - product, value - stock status
 input_string = ''
 
+print("Hello! Welcome to our online magazine tracker! \n "
+      "You can now make some actions on your account. \n"
+      f"To perform an action type as follows:\n"
+      f"1. To make payment: {ALLOWED_COMMANDS[0]} <amount in gr> <comment> \n"
+      f"2. To record sale: {ALLOWED_COMMANDS[1]} <product> <price> <number>\n"
+      f"3. To record purchase: {ALLOWED_COMMANDS[2]} <product> <price> <number>\n"
+      f"4. To preview your account balance: {ALLOWED_COMMANDS[4]}.\n"
+      f"5. To preview your stock status: {ALLOWED_COMMANDS[5]}.\n"
+      f"When you are done updating your magazine, type {ALLOWED_COMMANDS[3]} to proceed to summary.")
+
 # actions
 while input_string != 'stop':
-    input_string = input("Action: ")  # get input
+    input_string = input("Write action: ")  # get input
     input_list = input_string.split()
     command = input_list[0]
     action_counter += 1  # number of line will be the key of a dict
     actions[action_counter] = input_list  # current command line is saved
     if command in ALLOWED_COMMANDS:
-        if command == 'balance':  # balance mode
+        if command == 'payment':  # entering payment mode
             account_change = int(input_list[1])  # int
             comment = input_list[2]  # str
             account_balance += account_change  # update account balance
             # print(f'Balance mode: change on the account: {account_change}, comment: {comment}.')
         elif command == 'stop':
             break
+        elif command == 'account':
+            print(f'Current account balance is {account_balance}.')
+        elif command == 'magazine':
+            print(f'Current magazine status is:\n {magazine}.')
         else:
             product_id = input_list[1]  # str
             price = int(input_list[2])  # int
@@ -59,23 +73,28 @@ while input_string != 'stop':
 print(f'Changes complete.')
 
 # prints with stock/account status
-input_string = input("Write next action: ")
-input_list = input_string.split()
-if input_string == 'account':
-    print(f'Current account balance is {account_balance}.')
-elif input_string == 'account history':
-    print(f'Account history:')
-    for change, comment in account_history.items():
-        print(change, comment)
-elif input_list[0] == 'magazine':
-    print(f'Stock status:')
-    for product in input_list:
-        if product in magazine:
-            print(f'{product}: {magazine[product]}')
-        else:
-            print(f'Given product not in magazine')
-    # for product, number in magazine.items():
-    #    print(product, number)
+print(f'Time to sum up. Type as follows:\n'
+      f'1. To preview your account balance: {ALLOWED_COMMANDS[4]}.\n'
+      f'2. To preview stock status of chosen products: {ALLOWED_COMMANDS[5]} <product1> <product2> etc.\n'
+      f'3. To view account history: history')
+input_string = input("Write action: ")
+if input_string:  # if a use typed any action
+    input_list = input_string.split()
+    if input_string == 'account':
+        print(f'Current account balance is {account_balance}.')
+    elif input_string == 'history':
+        print(f'Account history:')
+        for change, comment in account_history.items():
+            print(change, comment)
+    elif input_list[0] == 'magazine':
+        print(f'Stock status:')
+        for product in input_list:
+            if product in magazine:
+                print(f'{product}: {magazine[product]}')
+            else:
+                print(f'Given product not in magazine')
+        # for product, number in magazine.items():
+        #    print(product, number)
 
 # final print
 print('All actions performed:')
