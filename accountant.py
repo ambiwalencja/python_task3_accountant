@@ -10,12 +10,12 @@ input_string = ''
 print("Hello! Welcome to our online magazine tracker! \n "
       "You can now make some actions on your account. \n"
       f"To perform an action type as follows:\n"
-      f"1. To make payment: {ALLOWED_COMMANDS[0]} <amount in gr> <comment> \n"
-      f"2. To record sale: {ALLOWED_COMMANDS[1]} <product> <price> <number>\n"
-      f"3. To record purchase: {ALLOWED_COMMANDS[2]} <product> <price> <number>\n"
+      f"1. To record a payment: {ALLOWED_COMMANDS[0]} <amount in gr> <comment> \n"
+      f"2. To note a sale: {ALLOWED_COMMANDS[1]} <product> <price> <number>\n"
+      f"3. To note a purchase: {ALLOWED_COMMANDS[2]} <product> <price> <number>\n"
       f"4. To preview your account balance: {ALLOWED_COMMANDS[4]}\n"
       f"5. To preview your stock status: {ALLOWED_COMMANDS[5]}\n"
-      f"When you are done updating your magazine, type {ALLOWED_COMMANDS[3]} to proceed to summary.")
+      f"When you are done with updates, type {ALLOWED_COMMANDS[3]} to proceed to summary.")
 
 # actions
 while input_string != 'stop':
@@ -31,7 +31,6 @@ while input_string != 'stop':
             account_change = int(input_list[1])  # int
             comment = input_list[2]  # str
             account_balance += account_change  # update account balance
-            # print(f'Balance mode: change on the account: {account_change}, comment: {comment}.')
         elif command == 'account':
             print(f'Current account balance is {account_balance}.')
         elif command == 'magazine':
@@ -45,13 +44,15 @@ while input_string != 'stop':
             if price > 0 and number > 0:  # price and number must be positive
                 if command == 'sale':
                     if product_id in magazine:
-                        if magazine[product_id] > number:
+                        if magazine[product_id] >= number:
                             magazine[product_id] -= number  # subtracting number of sold products from the magazine
                             account_balance += price * number  # adding income
                             account_history[price] = 'sale'  # adding comment to the account change
                         else:
                             print(f'Error - out of stock')
                             continue  # try again
+                        if magazine[product_id] == 0:
+                            del magazine[product_id]
                     else:
                         print(f'Not in offer! Pick another product')
                         continue  # try again...
@@ -63,24 +64,21 @@ while input_string != 'stop':
                         # print(f'Magazine: {product_id}: number - {magazine[product_id]}, last added - {number}')
                     else:
                         magazine[product_id] = number  # adding purchased products to the magazine
-                    # print(f'Purchase mode: product ID - {product_id}, '
-                    #      f' price - {price}, numbers of sold items - {number}.')
             else:
                 print('Error - price and number must be positive.')
                 continue  # try again
     else:
         print(f'Please write one of allowed commands: {ALLOWED_COMMANDS}')
-    # input_string = input("Next action: ")  # get next input
 
 print(f'Changes complete.')
 
-# prints with stock/account status
+# summary
 print(f'Time to sum up. Type as follows:\n'
-      f'1. To preview your account balance: {ALLOWED_COMMANDS[4]}.\n'
-      f'2. To preview stock status of chosen products: {ALLOWED_COMMANDS[5]} <product1> <product2> etc.\n'
-      f'3. To view account history: history')
+      f'To preview your account balance: {ALLOWED_COMMANDS[4]}.\n'
+      f'or to preview stock status of chosen products: {ALLOWED_COMMANDS[5]} <product1> <product2> etc.\n'
+      f'or to view account history: history')
 input_string = input("Write action: ")
-if input_string:  # if a use typed any action
+if input_string:  # if a user typed any action
     input_list = input_string.split()
     if input_string == 'account':
         print(f'Current account balance is {account_balance}.')
@@ -95,8 +93,6 @@ if input_string:  # if a use typed any action
                 print(f'{product}: {magazine[product]}')
             else:
                 print(f'Given product not in magazine')
-        # for product, number in magazine.items():
-        #    print(product, number)
 
 # final print
 print('All actions performed:')
