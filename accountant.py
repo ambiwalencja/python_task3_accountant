@@ -13,13 +13,15 @@ print("Hello! Welcome to our online magazine tracker! \n "
       f"1. To make payment: {ALLOWED_COMMANDS[0]} <amount in gr> <comment> \n"
       f"2. To record sale: {ALLOWED_COMMANDS[1]} <product> <price> <number>\n"
       f"3. To record purchase: {ALLOWED_COMMANDS[2]} <product> <price> <number>\n"
-      f"4. To preview your account balance: {ALLOWED_COMMANDS[4]}.\n"
-      f"5. To preview your stock status: {ALLOWED_COMMANDS[5]}.\n"
+      f"4. To preview your account balance: {ALLOWED_COMMANDS[4]}\n"
+      f"5. To preview your stock status: {ALLOWED_COMMANDS[5]}\n"
       f"When you are done updating your magazine, type {ALLOWED_COMMANDS[3]} to proceed to summary.")
 
 # actions
 while input_string != 'stop':
     input_string = input("Write action: ")  # get input
+    if not input_string:
+        break
     input_list = input_string.split()
     command = input_list[0]
     action_counter += 1  # number of line will be the key of a dict
@@ -30,12 +32,12 @@ while input_string != 'stop':
             comment = input_list[2]  # str
             account_balance += account_change  # update account balance
             # print(f'Balance mode: change on the account: {account_change}, comment: {comment}.')
-        elif command == 'stop':
-            break
         elif command == 'account':
             print(f'Current account balance is {account_balance}.')
         elif command == 'magazine':
             print(f'Current magazine status is:\n {magazine}.')
+        elif command == 'stop':
+            break
         else:
             product_id = input_list[1]  # str
             price = int(input_list[2])  # int
