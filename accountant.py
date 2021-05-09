@@ -28,6 +28,8 @@ while input_string != 'stop':
     actions[action_counter] = input_list  # current command line is saved
     if command in ALLOWED_COMMANDS:
         if command == 'payment':  # entering payment mode
+            if len(input_list) < 3:  # if not enough parameters given
+                continue
             account_change = int(input_list[1])  # int
             comment = input_list[2]  # str
             account_balance += account_change  # update account balance
@@ -38,6 +40,8 @@ while input_string != 'stop':
         elif command == 'stop':
             break
         else:
+            if len(input_list) < 4:  # if not enough parameters given
+                continue
             product_id = input_list[1]  # str
             price = int(input_list[2])  # int
             number = int(input_list[3])  # int
@@ -88,11 +92,11 @@ if input_string:  # if a user typed any action
             print(change, comment)
     elif input_list[0] == 'magazine':
         print(f'Stock status:')
-        for product in input_list:
+        for product in input_list[1:]:
             if product in magazine:
                 print(f'{product}: {magazine[product]}')
             else:
-                print(f'Given product not in magazine')
+                print(f'Product {product} not in magazine.')
 
 # final print
 print('All actions performed:')
